@@ -283,19 +283,20 @@
     document.getElementById('f-note').style.display='block';
     ['f-name','f-email','f-subj','f-msg'].forEach(id=>document.getElementById(id).value='');
   });
-  (function(){
+  document.addEventListener('DOMContentLoaded',function(){
     const trigger=document.querySelector('.video');
     const modal=document.getElementById('vmodal');
     const player=document.getElementById('vplayer');
     const closeBtn=document.getElementById('vmodalClose');
     const VID='XWumrkaNc-8';
+    if(!trigger||!modal||!player||!closeBtn)return;
     function openV(e){if(e)e.preventDefault();player.src='https://www.youtube.com/embed/'+VID+'?autoplay=1&rel=0';modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
     function closeV(){player.src='';modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
-    if(trigger)trigger.addEventListener('click',openV);
+    trigger.addEventListener('click',openV);
     closeBtn.addEventListener('click',closeV);
     modal.addEventListener('click',e=>{if(e.target===modal)closeV();});
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeV();});
-  })();
+  });
 </script>
 <!-- Inline video player (mini player / lightbox) -->
 <div class="vmodal" id="vmodal" aria-hidden="true">
