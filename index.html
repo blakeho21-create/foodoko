@@ -67,6 +67,14 @@
   .play:hover{transform:scale(1.08);background:rgba(255,255,255,.14)}
   .play::before{content:'';border-left:18px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px}
   .video .vcap{position:relative;z-index:2;font-family:var(--font-head);font-weight:700;margin-top:16px}
+  /* inline video player (mini player) */
+  .vmodal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;padding:24px}
+  .vmodal.open{display:flex}
+  .vmodal-inner{position:relative;width:100%;max-width:880px}
+  .vframe{position:relative;padding-bottom:56.25%;height:0;border-radius:12px;overflow:hidden;background:#000;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .vframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .vmodal-close{position:absolute;top:-46px;right:0;background:none;border:0;color:#fff;font-size:2.4rem;line-height:1;cursor:pointer;padding:0 6px}
+  .vmodal-close:hover{color:var(--orange)}
 
   /* GALLERY */
   .gallery-head{background:var(--dark);color:#fff;text-align:center;padding:44px 20px}
@@ -275,6 +283,26 @@
     document.getElementById('f-note').style.display='block';
     ['f-name','f-email','f-subj','f-msg'].forEach(id=>document.getElementById(id).value='');
   });
+  (function(){
+    const trigger=document.querySelector('.video');
+    const modal=document.getElementById('vmodal');
+    const player=document.getElementById('vplayer');
+    const closeBtn=document.getElementById('vmodalClose');
+    const VID='XWumrkaNc-8';
+    function openV(e){if(e)e.preventDefault();player.src='https://www.youtube.com/embed/'+VID+'?autoplay=1&rel=0';modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+    function closeV(){player.src='';modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+    if(trigger)trigger.addEventListener('click',openV);
+    closeBtn.addEventListener('click',closeV);
+    modal.addEventListener('click',e=>{if(e.target===modal)closeV();});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeV();});
+  })();
 </script>
+<!-- Inline video player (mini player / lightbox) -->
+<div class="vmodal" id="vmodal" aria-hidden="true">
+  <div class="vmodal-inner">
+    <button class="vmodal-close" id="vmodalClose" aria-label="Close video">&times;</button>
+    <div class="vframe"><iframe id="vplayer" src="" title="What is a Sushi Burrito?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+  </div>
+</div>
 </body>
 </html>
